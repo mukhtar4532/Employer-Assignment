@@ -21,6 +21,7 @@ export const Login = () => {
         console.log(res.data.token);
 
         setUser(res.data.user);
+        navigate("/users");
       })
       .catch((err) => {
         console.log(err.response.data);
