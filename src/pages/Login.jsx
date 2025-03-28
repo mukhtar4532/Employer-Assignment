@@ -2,9 +2,10 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 // import { loginUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import axios from "../axios/axios.js";
 
 export const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("eve.holt@reqres.in");
   const [password, setPassword] = useState("cityslicka");
@@ -12,15 +13,18 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await loginUser({ email, password });
-      login(response.data.token);
-      console.log("user logged in");
+    axios
+      .post("/login", { email, password })
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("token", res.data.token);
+        console.log(res.data.token);
 
-      // navigate("/users");
-    } catch {
-      setError("Invalid credentials");
-    }
+        setUser(res.data.user);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
 
   return (
