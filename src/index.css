@@ -1,1 +1,43 @@
 @import "tailwindcss";
+
+@keyframes bounceSlow {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(50px);
+  }
+}
+
+@keyframes bounceReverse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-50px);
+  }
+}
+
+@keyframes bounceFast {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(70px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 5s infinite ease-in-out;
+}
+
+.animate-bounce-reverse {
+  animation: bounceReverse 6s infinite ease-in-out;
+}
+
+.animate-bounce-fast {
+  animation: bounceFast 4s infinite ease-in-out;
+}
