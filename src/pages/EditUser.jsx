@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios from "../axios/axios.js";
 
-// import { updateUser } from "../services/api";
-
 export const EditUser = ({ user, onClose, onUpdate, page }) => {
   let [formData, setFormData] = useState({
     first_name: user.first_name,
