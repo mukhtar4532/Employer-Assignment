@@ -3,14 +3,12 @@ import axios from "../axios/axios.js";
 
 // import { updateUser } from "../services/api";
 
-export const EditUser = ({ user, onClose, onUpdate }) => {
+export const EditUser = ({ user, onClose, onUpdate, page }) => {
   let [formData, setFormData] = useState({
     first_name: user.first_name,
     last_name: user.last_name,
     email: user.email,
   });
-  const userId = user.id;
-  //   console.log(userId);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +19,7 @@ export const EditUser = ({ user, onClose, onUpdate }) => {
     console.log("Form Data Before Update:", formData);
     formData = {
       ...formData,
-      id: userId,
+      id: user.id,
     };
 
     try {
@@ -30,12 +28,13 @@ export const EditUser = ({ user, onClose, onUpdate }) => {
       console.log("Updated User Data:", updatedUser);
 
       // Update localStorage
-      const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const storedUsers =
+        JSON.parse(localStorage.getItem(`users_page_${page}`)) || [];
       const updatedUsers = storedUsers.map((u) =>
         u.id === user.id ? updatedUser : u
       );
 
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
+      localStorage.setItem(`users_page_${page}`, JSON.stringify(updatedUsers));
 
       // Update UI with latest data
       onUpdate(updatedUser);

@@ -10,41 +10,34 @@ export const Users = () => {
   const [editUser, setEditUser] = useState(null);
   const navigate = useNavigate();
 
-  // const fetchUsers = async () => {
-  //   try {
-  //     const res = await axios.get(`/users?page=${page}`);
-  //     console.log("Fetched Users List:", res.data.data);
-  //     setUsers(res.data.data);
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //   }
-  // };
-
   const handleUpdate = (updatedUser) => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const storedUsers =
+      JSON.parse(localStorage.getItem(`users_page_${page}`)) || [];
 
     const updatedUsers = storedUsers.map((user) =>
       user.id === updatedUser.id ? { ...user, ...updatedUser } : user
     );
 
-    localStorage.setItem("users", JSON.stringify(updatedUsers)); // Save to local storage
+    localStorage.setItem(`users_page_${page}`, JSON.stringify(updatedUsers)); // Save to local storage
     setUsers(updatedUsers); // Update UI
   };
 
   const handleDelete = (id) => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const storedUsers =
+      JSON.parse(localStorage.getItem(`users_page_${page}`)) || [];
 
     const updatedUsers = storedUsers.filter((user) => user.id !== id);
 
-    localStorage.setItem("users", JSON.stringify(updatedUsers)); // Save to local storage
+    localStorage.setItem(`users_page_${page}`, JSON.stringify(updatedUsers)); // Save to local storage
     setUsers(updatedUsers); // Update UI
   };
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem("users"));
+    const storedUsers = JSON.parse(localStorage.getItem(`users_page_${page}`));
 
     if (storedUsers && storedUsers.length > 0) {
       setUsers(storedUsers);
+      console.log(storedUsers);
     } else {
       axios
         .get(`/users?page=${page}`)
@@ -53,7 +46,10 @@ export const Users = () => {
             ? res.data.data
             : [res.data.data];
           setUsers(fetchedUsers);
-          localStorage.setItem("users", JSON.stringify(fetchedUsers)); // Store in local storage
+          localStorage.setItem(
+            `users_page_${page}`,
+            JSON.stringify(fetchedUsers)
+          ); // Store in local storage
         })
         .catch((error) => {
           console.error("Error fetching users:", error);
@@ -125,6 +121,7 @@ export const Users = () => {
           user={editUser}
           onClose={() => setEditUser(null)}
           onUpdate={handleUpdate}
+          page={page}
         />
       )}
     </div>
